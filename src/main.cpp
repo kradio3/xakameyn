@@ -34,15 +34,13 @@ string hasData(string s) {
 int main() {
   uWS::Hub h;
 
-  PID pid;
+  PID angle_pid;
+  PID speed_pid;
 
-  double prev_cte=0;
-  deque<double> prev_ctes(10, 0);
-  /**
-   * TODO: Initialize the pid variable.
-   */
+  angle_pid.Init(0.03, 0.14, 1.3, 10);
+  speed_pid.Init(0.0, 0.7, 0.5, 5);
 
-  h.onMessage([&pid, &prev_cte, &prev_ctes](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
+  h.onMessage([&angle_pid, &speed_pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, 
                      uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
@@ -55,35 +53,21 @@ int main() {
 
         string event = j[0].get<string>();
 
+
         if (event == "telemetry") {
           // j[1] is the data JSON object
           double cte = std::stod(j[1]["cte"].get<string>());
           double speed = std::stod(j[1]["speed"].get<string>());
           double angle = std::stod(j[1]["steering_angle"].get<string>());
-          double steer_value = -0.2 * cte - 0.4* (cte-prev_cte);
 
-          double icte = 0;
-          for(int i = 0; i < prev_ctes.size(); i++){
-            icte += prev_ctes[i];
-            //cout << prev_ctes[i] <<"; ";
-          }
+          angle_pid.UpdateError(cte);
+          speed_pid.UpdateError(cte);
+          double steer_error = angle_pid.TotalError();
+          double speed_error = speed_pid.TotalError();
+          double steer_value = -steer_error;
+          double throttle = (5)/(0.05*speed + 0.8) -1 - fabs(speed_error);
 
-          double d_throt = fabs(0.1*cte + 0.2*(cte-prev_cte));
 
-          double throttle = 0.2 - d_throt;
-
-          //cout<<"Dthrot "<<d_throt<<"; throt "<<throttle<<endl;
-
-          prev_cte = cte;
-          prev_ctes.push_back(cte);
-          prev_ctes.pop_front();
-          /**
-           * TODO: Calculate steering value here, remember the steering value is
-           *   [-1, 1].
-           * NOTE: Feel free to play around with the throttle and speed.
-           *   Maybe use another PID controller to control the speed!
-           */
-          
           // DEBUG
           //std::cout << "CTE: " << cte << " Steering Value: " << steer_value 
                     //<< std::endl;
