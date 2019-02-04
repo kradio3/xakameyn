@@ -14,4 +14,4 @@ I've used two PID controllers: one for angle and second for throttle control. Bo
 Total error calculated by angle controller going directly as angle correction factor.
 Total error from throttle controller subtracting from this function:
 
-![alt text][throttle_by_speed]
+<img src="https://raw.githubusercontent.com/kradio3/xakameyn/master/images/throttle_by_speed.png" height="200">
