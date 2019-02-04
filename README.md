@@ -20,4 +20,4 @@ If car will go faster - throttle will smoothly close.
 
 The final equation is:
 
-![Throttle function](https://latex.codecogs.com/gif.latex?\frac{5}{(0.05\cdot&space;speed&space;&plus;&space;0.8)}&space;-&space;1&space;-&space;E_{throttle})
+![Throttle function](https://latex.codecogs.com/gif.latex?Throttle&space;=&space;\frac{5}{(0.05\cdot&space;speed&space;&plus;&space;0.8)}&space;-&space;1&space;-&space;E_{throttle})
