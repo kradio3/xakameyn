@@ -19,4 +19,4 @@ Total error from throttle controller subtracting from this function:
 If car will go faster - throttle will smoothly close.
 
 The final equation is:
-![Throttle function](https://www.codecogs.com/eqnedit.php?latex=\frac{5}{(0.05\cdot&space;speed&space;&plus;&space;0.8)}&space;-&space;1&space;-&space;ERROR_{throttle})
+![Throttle function](https://latex.codecogs.com/gif.latex?\frac{5}{(0.05\cdot&space;speed&space;&plus;&space;0.8)}&space;-&space;1&space;-&space;ERROR_{throttle})
